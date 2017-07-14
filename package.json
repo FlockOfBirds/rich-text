@@ -5,7 +5,7 @@
   "description": "Rich inline or toolbar text editing",
   "scripts": {
     "pretest": "tsc && lint",
-    "test": "karma start  --browsers Firefox --single-run --codeCoverage && node tests/remap.js",
+    "test": "karma start --browsers Firefox --single-run --codeCoverage && node tests/remap.js",
     "lint": "tslint -c tslint.json '**/*.ts' '**/*.tsx' --exclude '**/node_modules/**'"
   },
   "repository": {
