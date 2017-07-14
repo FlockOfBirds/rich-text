@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.org/Andries-Smit/text-editor.svg?branch=master)](https://travis-ci.org/Andries-Smit/travis)
-[![Dependency Status](https://david-dm.org/Andries-Smit/text-editor.svg)](https://david-dm.org/Andries-Smit/text-editor)
-[![Dev Dependency Status](https://david-dm.org/Andries-Smit/text-editor.svg#info=devDependencies)](https://david-dm.org/Andries-Smit/text-editor#info=devDependencies)
+[![Build Status](https://travis-ci.org/Andries-Smit/rich-text.svg?branch=master)](https://travis-ci.org/Andries-Smit/rich-text)
+[![Dependency Status](https://david-dm.org/Andries-Smit/rich-text.svg)](https://david-dm.org/Andries-Smit/text-editor)
+[![Dev Dependency Status](https://david-dm.org/Andries-Smit/rich-text.svg#info=devDependencies)](https://david-dm.org/Andries-Smit/rich-text#info=devDependencies)
 [![codecov](https://codecov.io/gh/andries-smit/rich-text/branch/master/graph/badge.svg)](https://codecov.io/gh/andries-smit/rich-text)
 
 # Text Editor
