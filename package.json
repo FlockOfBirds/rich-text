@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Rich inline or toolbar text editing",
   "scripts": {
-    "pretest": "tsc && lint",
+    "pretest": "tsc && npm run lint",
     "test": "karma start --browsers Firefox --single-run --codeCoverage && node tests/remap.js",
     "lint": "tslint -c tslint.json '**/*.ts' '**/*.tsx' --exclude '**/node_modules/**'"
   },
@@ -48,6 +48,7 @@
     "karma": "^1.7.0",
     "karma-chrome-launcher": "^2.2.0",
     "karma-coverage": "^1.1.1",
+    "karma-firefox-launcher": "^1.0.1",
     "karma-jasmine": "^1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
     "karma-remap-istanbul": "^0.6.0",
@@ -55,8 +56,6 @@
     "karma-webpack": "^2.0.4",
     "mendix-client": "https://github.com/FlockOfBirds/Mendix-client-typing/archive/7.1.0.tar.gz",
     "node-sass": "^4.5.3",
-    "nodemon": "^1.11.0",
-    "pre-commit": "^1.2.2",
     "raw-loader": "^0.5.1",
     "react": "^15.6.1",
     "react-addons-test-utils": "^15.6.0",
