@@ -1,25 +1,28 @@
 sudo: required
 dist: trusty
-
 language: node_js
 node_js:
-  - "6"
-
+- '6'
 before_install:
-  - npm i -g npm@5
-  - npm install grunt-cli -g
-  - export CHROME_BIN=chromium-browser
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
-  - wget -q -O - http://opensource.wandisco.com/wandisco-debian.gpg | sudo apt-key add -
-  - sudo sh -c 'echo "deb http://opensource.wandisco.com/debian/ wheezy svn17" > /etc/apt/sources.list.d/wandisco-subversion.list'
-  - sudo apt-get -qq update
-  - sudo apt-get install -y --allow-downgrades subversion=1.7.22-1+WANdisco libsvn1=1.7.22-1+WANdisco
-  - svn --version
-
+- npm i -g npm@5
+- npm install grunt-cli -g
+- export CHROME_BIN=chromium-browser
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
+- wget -q -O - http://opensource.wandisco.com/wandisco-debian.gpg | sudo apt-key add -
+- sudo sh -c 'echo "deb http://opensource.wandisco.com/debian/ wheezy svn17" > /etc/apt/sources.list.d/wandisco-subversion.list'
+- sudo apt-get -qq update
+- sudo apt-get install -y --allow-downgrades subversion=1.7.22-1+WANdisco libsvn1=1.7.22-1+WANdisco
+- svn --version
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
-
+- bash <(curl -s https://codecov.io/bash)
 cache:
   directories:
-    - "node_modules"
+  - node_modules
+env:
+  global:
+  - TEAM_SERVER_ULR=https://teamserver.sprintr.com
+  - BRANCH_NAME=trunk
+  - PROJECT_ID=d424a4fd-9473-4b53-94a5-99ad227c2278
+  - MX_USER=as@flockfobirds.org
+  - secure: i4gp1veoKOdDslMs1dMeW4C0u24xSVVsBK+M76J0N/BEOtc0SJ6EFA5drXm0gg2cpDCZcgTlqgJt+rv6jPNo3o7QduqIUuAuS+0TZyPW3ZpOSixdFe16UGshHjSQGMb2hr/W9P2d//wGVrnZb7Y/5oLut3pfP+F++o8sReEDOM/hDg31ksu9QBEyDGjl1y7wSz84vm7oJ9avvzF1Ynp4byD4FrroB6eCjNhX40KBAATADtfIulL1trpfPOe7+wlW0EN5BQ/R90vOYKb73zZA1mKFK101LbTbAfYNAsT8AgOMu7PrONs0JIh5EE2dpw7SpZNrjlblcogqutzMGUHbzK03+ftFGaYx2duRqbm72QXrfPm0MvFqRpTJSNnoI2mYRr2adCH5C7amY3AnTCA9dlQRg3+e8CKhlal3j7YPLiXBUt2FlOtwhnMbKp2YOj667eXg8ug5bAhdaaBbFyeORu5Bum+zmu4VFMLQIw/pgQY4jtSggqrcxOTpPWAOslWKHtyN8VMlc7T3lvKKV+LzTzlph/Ae3Iy+9fF/QdtHRgpRhOjNwjNycZRWl0sEaxVceUqnzhaJqu0gwqFJC4T7I6feNuANWeF3VsYVZnH21ypOuRW5/qlT6gCzgoq+4gdNqkuj59jNSZEeefyUljKgWNb3YEchVmuOsh2QhPZphn8=

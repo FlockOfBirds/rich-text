@@ -1,2 +1,3 @@
 dist/
 node_modules/
+tests/scripts/localSettings.ts
