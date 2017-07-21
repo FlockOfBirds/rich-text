@@ -14,7 +14,7 @@ before_install:
   - wget -q -O - http://opensource.wandisco.com/wandisco-debian.gpg | sudo apt-key add -
   - sudo sh -c 'echo "deb http://opensource.wandisco.com/debian/ wheezy svn17" > /etc/apt/sources.list.d/wandisco-subversion.list'
   - sudo apt-get -qq update
-  - sudo apt-get install -y subversion=1.7.22-1+WANdisco libsvn1=1.7.22-1+WANdisco
+  - sudo apt-get install -y --allow-downgrades subversion=1.7.22-1+WANdisco libsvn1=1.7.22-1+WANdisco
   - svn --version
 
 after_success:
