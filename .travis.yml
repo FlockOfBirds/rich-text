@@ -23,7 +23,7 @@ cache:
   - node_modules
 env:
   global:
-  - TEAM_SERVER_ULR=https://teamserver.sprintr.com
+  - TEAM_SERVER_URL=https://teamserver.sprintr.com
   - BRANCH_NAME=trunk
   - PROJECT_ID=d424a4fd-9473-4b53-94a5-99ad227c2278
   - MX_USER=as@flockfobirds.org
