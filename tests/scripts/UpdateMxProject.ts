@@ -14,20 +14,24 @@ const svn = new SvnService(projectUrl, settings.user, settings.password, buildFo
 const version: string = pkg.version;
 const widgetName: string = pkg.widgetName;
 
-updateProject();
+updateProject().then(success => process.exit(0), error => process.exit(0));
 
 async function updateProject() {
-    try {
-        console.log("Checking out to " + buildFolder);
-        await svn.checkOutBranch();
-        console.log("Copy widget");
-        await copyWidget();
-        console.log("Committing changes");
-        await svn.commit("CI script commit");
-        console.log("Done");
-    } catch (error) {
-        console.error("Error updating Mendix project", error);
-    }
+    return new Promise<boolean>(async (resolve, reject) => {
+        try {
+            console.log("Checking out to " + buildFolder);
+            await svn.checkOutBranch();
+            console.log("Copy widget");
+            await copyWidget();
+            console.log("Committing changes");
+            await svn.commit("CI script commit");
+            console.log("Done");
+            resolve(true);
+        } catch (error) {
+            console.error("Error updating Mendix project", error);
+            reject(error);
+        }
+    });
 }
 
 async function copyWidget() {
