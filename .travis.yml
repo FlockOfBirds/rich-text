@@ -1,0 +1,30 @@
+sudo: required
+dist: trusty
+language: node_js
+node_js:
+- '6'
+before_install:
+- npm i -g npm@5
+- npm install grunt-cli -g
+- export CHROME_BIN=chromium-browser
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
+- wget -q -O - http://opensource.wandisco.com/wandisco-debian.gpg | sudo apt-key add -
+- sudo sh -c 'echo "deb http://opensource.wandisco.com/debian/ wheezy svn17" > /etc/apt/sources.list.d/wandisco-subversion.list'
+- sudo apt-get -qq update
+- sudo apt-get install -y --allow-downgrades subversion=1.7.22-1+WANdisco libsvn1=1.7.22-1+WANdisco
+- svn --version
+script:
+- npm run updateProject
+after_success:
+- bash <(curl -s https://codecov.io/bash)
+cache:
+  directories:
+  - node_modules
+env:
+  global:
+  - TEAM_SERVER_URL=https://teamserver.sprintr.com
+  - BRANCH_NAME=trunk
+  - PROJECT_ID=d424a4fd-9473-4b53-94a5-99ad227c2278
+  - MX_USER=as@flockfobirds.org
+  - secure: cNNZ1cS1EdRUosYx++Kng14IsULrl301ufJmcFFihhjuI3FBCWP6FStOFO8TDsSPvRdcQOyTQyTm7N0MBVwt+eEEfoiYF/fo4vo8G33QXhDMVihKeSl6ImAdCE/LGCKzgAzKWvULy3LT8vFXk9b7ITXEbjm0QMdqPRWNtJXYAodPGwty6pblqPzSTEDAcq/6UzcLAIZy2sLaqS63uJCIg5I7JX8mrEGVKvCcBa1L71Hwv1m9LIhyUsyYlAif4ejawhDlAOMCO8Q4Mx3XdB52qxHqt8h3SV+Pe0ze+z5031R6BS+zpLHONbjDdkaPQVTyoItEUy83JY1GZj6RsrEB3ycICuOGX2hfgvKYhAGvTCbf89j+D55JWauM8UHvr9fcJxJA/ZHhdZDHddtAjMGFUICsevwKBauJYrMP9cIagSVu2/BTgPJMbJmB3s46viHeE2lFKN36e+onjJlboPuDuVRmk0I/ZvEBTdm4KWgNdoNZ23gxpcGqIlNuA8T+f6R/Y+xDrJHo55cjPiqhPaR129MoJEHb8keA8Of9rwAc7/bErdvm018sOWhETAYSVCmPipa9V+bFo7NxDBYuIYbkomvfR5IdZN1M6dvuHY//W4odfJDPHhed5DpxwYBYuA1jNBPNHBcrxJbfHa9hiJu7gwqIt+jRkBT9QOCWMONX7M8=
