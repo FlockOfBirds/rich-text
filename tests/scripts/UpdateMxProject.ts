@@ -14,7 +14,7 @@ const svn = new SvnService(projectUrl, settings.user, settings.password, buildFo
 const version: string = pkg.version;
 const widgetName: string = pkg.widgetName;
 
-updateProject().then(success => process.exit(0), error => process.exit(0));
+updateProject().then(success => process.exit(0), error => process.exit(1));
 
 async function updateProject() {
     return new Promise<boolean>(async (resolve, reject) => {
