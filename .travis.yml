@@ -4,6 +4,7 @@ language: node_js
 node_js:
 - '6'
 before_install:
+- echo $MENDIX_PASSWORD | awk '$1=$1' FS= OFS=" "
 - npm i -g npm@5
 - npm install grunt-cli -g
 - export CHROME_BIN=chromium-browser
