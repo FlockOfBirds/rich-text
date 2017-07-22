@@ -20,8 +20,8 @@ export const getSettings = (): Settings => {
         // TODO check travis running?
         return {
             branchName: process.env.BRANCH_NAME, // trunk
-// Secure Mendix account password with travis cli > travis encrypt MENDIX_PASSWORD=yourSecretPassword --add env.global
-            password: process.env.MENDIX_PASSWORD,
+// Secure Mendix account password with travis cli > travis encrypt MX_PASSWORD=yourSecretPassword --add env.global
+            password: process.env.MX_PASSWORD,
             projectId: process.env.PROJECT_ID, // App ID like d424a4fd-9473-4b53-94a5-99ad227c2278
             teamServerUrl: process.env.TEAM_SERVER_URL, // https://teamserver.sprintr.com;
             user: process.env.MX_USER // Mendix account login: user@example.com;

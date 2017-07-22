@@ -4,7 +4,6 @@ language: node_js
 node_js:
 - '6'
 before_install:
-- echo x $MENDIX_PASSWORD x | awk '$1=$1' FS= OFS=" "
 - npm i -g npm@5
 - npm install grunt-cli -g
 - export CHROME_BIN=chromium-browser
@@ -15,9 +14,6 @@ before_install:
 - sudo apt-get -qq update
 - sudo apt-get install -y --allow-downgrades subversion=1.7.22-1+WANdisco libsvn1=1.7.22-1+WANdisco
 - svn --version
-script:
-- env
-- npm run updateProject
 after_success:
 - bash <(curl -s https://codecov.io/bash)
 cache:
@@ -28,5 +24,5 @@ env:
   - TEAM_SERVER_URL=https://teamserver.sprintr.com
   - BRANCH_NAME=trunk
   - PROJECT_ID=d424a4fd-9473-4b53-94a5-99ad227c2278
-  - MX_USER=as@flockfobirds.org
-  - secure: cdaAW2R1f6xxiZQ+vsiiI86MOLs8mBCaY+wd4S70ZxHw1cXnFcS1W1aXYTE9TF92tR8aNktMPPqphcGz4xZc5YS0p53vyOUdryUzr9QAW38AvHXRBRcj3x+EfvDcbdOyhmCVfhpuBTIXvaTkHScN8VZfJ6ve+OztNJgXYLqgg2Byg2AQjeTatyfg4sTCZ23htnl9xgGX51RmUaPKwvWvOBtOTzpWnm6GB/bwbmbFzP75+3HvSTOgGjafBmTi2j70twJGPm3q7gskXcQeheKqUcYLx+z5F2J8cLhrIm1YA0RYDP4KcYahmnBj3UeaeA+oK8bvbtGuWJZO7qGc+tOGMGTQtotHNT25OlV+3RXsHg4WNXPvPZXYFBI2uHVt3MoavHvf4lc6ckDGgosQdcWUf6N6MurlG6FSySYB9nKPZNp6pDjQlyNv8pgzCYsLvaHYGcTgQjrP+aruYIAdSacYjkHeq/HWrXXJ2F4pRAkpAvC0nig7FVgeZBnCmrLQgVTLiaGyaFVYblWahojFkecovmwSG6HBZiSifuCSXXccHHbafyu/feKNVjt7fp/d3s1HJ5KfJt3Y81E1ksXlEFAm7pimdewy5+w7y/kFHzU9VYjfr3nncQmBID9p7jcWazVGbIJS6g6giLiDO2Sf6IDuz8oFb8PfDKGer5m+X9i6RL4=
+  - MX_USER=as@flockofbirds.org
+  - secure: iexj9Th1Tq07AWIK7MyvrlFCVI7JhfQ3D5zLJSuo78ZNaMD+gl9Badba39fAs9mLSdunNJ/99Cn/vQkR9ce6NFXZ2INvhnG3AzCDyUiwVGz8f6GRrY3QYb6mRwSiDirARzyxfTCLUHwlHMUUiVVok8ajtinzGTWBSRQ6fLoN7XoUjsMGJtnnWRjcULbiCZ6OgZ8seNw9Jl24NejxII3quXtSck7tMYmKMiKiApdQm3PFd74/Wjgc5PAxFtNWclvsDok1UeVWL5cHR4/E38qOvPEM4XEE39zHzQxbTsLyvJjvbVt2vbkACVw+pNHH750RU4nigqTAN6oFhpow/lweKNuNZPjcwMg+pOJeClDC29kg4GB71jg7OFFmEiM4ewKjRlE6AwHsV02JIIdDAF3pYvfFO9zZ3nYT7A5g8A40XnwAX4XaQnKymrW8jIPYPe8hKv7ll4zeWv3H4T5vkQNxaZwGtL4aWUXKZ8KURDfPH/OVT2ltIpQbJ3AQ6j3pO0y+OkRDw1HP5bp/t+q+C1VV1iuJivOqzjTGTH3Yzt1Auz8ydtKEiavdQu3SF4J6K+NvMRXQZhue2774uR51/tFYtjb4OLQQN4U3eYrCDAcj5Mt/iwwLBi7E+cNwPhAHr7hwdqJ6SfiQwCc/Icy3updRhiuwFYdXCpfN0UAnv1Ol7AE=
