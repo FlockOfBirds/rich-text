@@ -52,6 +52,8 @@ export class SvnService {
     commit(files: string, message: string) {
         return new Promise((resolve, reject) => {
             svnUltimate.commands.commit(files, {
+                username: this.username,
+                password: this.password,
                 params: [ `-m "${message}"` ]
             }, (error) => {
                 if (!error) {
@@ -68,6 +70,8 @@ export class SvnService {
         const targetUrl = this.getBranchUrl(targetBranch);
         return new Promise((resolve, reject) => {
             svnUltimate.commands.copy(sourceUrl, targetUrl, {
+                username: this.username,
+                password: this.password,
                 params: [ `-m "${message}"` ]
             }, (error) => {
                 if (!error) {
