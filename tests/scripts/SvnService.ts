@@ -49,15 +49,15 @@ export class SvnService {
         });
     }
 
-    commit(message: string) {
+    commit(files: string, message: string) {
         return new Promise((resolve, reject) => {
-            svnUltimate.commands.commit(this.destination, {
+            svnUltimate.commands.commit(files, {
                 params: [ `-m "${message}"` ]
             }, (error) => {
                 if (!error) {
                     resolve();
                 } else {
-                    reject("failed to commit " + this.destination + error);
+                    reject("failed to commit " + files + " " + error);
                 }
             } );
         });

@@ -30,8 +30,9 @@ async function updateProject() {
             await copyWidget(releaseFolder);
             console.log("Zip project .mpk");
             await zipFolder(buildFolder, path.resolve(releaseFolder, "TestProject.mpk"));
-            // console.log("Committing changes");
-            // await svn.commit("CI script commit");
+            console.log("Committing changes");
+            const changedFile = path.join(buildFolder, "widgets", widgetName + ".mpk");
+            await svn.commit(changedFile, "CI script commit");
             console.log("Done");
             resolve(true);
         } catch (error) {
