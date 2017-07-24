@@ -2,11 +2,14 @@
 import * as svnUltimate from "node-svn-ultimate";
 
 export class SvnService {
-    constructor(private url: string, private username: string, private password: string, private destination) { }
+    private branchUrl
+    constructor(private baseUrl: string, private username: string, private password: string, private destination) {
+    }
 
-    checkOutBranch() {
+    checkOutBranch(branch: string) {
+        const branchUrl = this.getBranchUrl(branch);
         return new Promise<boolean>((resolve, reject) => {
-            svnUltimate.commands.checkout(this.url, this.destination, {
+            svnUltimate.commands.checkout(branchUrl, this.destination, {
                 username: this.username,
                 password: this.password
             }, (error) => {
@@ -58,5 +61,29 @@ export class SvnService {
                 }
             } );
         });
+    }
+
+    createBranch(sourceBranch: string, targetBranch: string, message: string ) {
+        const sourceUrl = this.getBranchUrl(sourceBranch);
+        const targetUrl = this.getBranchUrl(targetBranch);
+        return new Promise((resolve, reject) => {
+            svnUltimate.commands.copy(sourceUrl, targetUrl, {
+                params: [ `-m "${message}"` ]
+            }, (error) => {
+                if (!error) {
+                    resolve();
+                } else {
+                    reject(`failed to copy ${sourceUrl} to ${targetUrl}: ${error}`);
+                }
+            } );
+        });
+    }
+
+    checkBranchExists(sourceBranch) {
+
+    }
+
+    private getBranchUrl(branch: string): string{
+        return branch === "trunk" ? `${this.baseUrl}/${branch}` : `${this.baseUrl}/branches/${branch}`;
     }
 }

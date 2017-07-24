@@ -21,6 +21,7 @@
     "url": "https://github.com/mendixlabs/rich-text/issues"
   },
   "devDependencies": {
+    "@types/archiver": "^2.0.0",
     "@types/classnames": "^2.2.0",
     "@types/core-js": "0.9.36",
     "@types/enzyme": "^2.8.2",
