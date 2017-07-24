@@ -9,7 +9,7 @@ before_install:
 - export CHROME_BIN=chromium-browser
 - export DISPLAY=:99.0
 - sh -e /etc/init.d/xvfb start
-- 'wget -q -O - http://opensource.wandisco.com/wandisco-debian.gpg | sudo apt-key add -'
+- wget -q -O - http://opensource.wandisco.com/wandisco-debian.gpg | sudo apt-key add -
 - sudo sh -c 'echo "deb http://opensource.wandisco.com/debian/ wheezy svn17" > /etc/apt/sources.list.d/wandisco-subversion.list'
 - sudo apt-get -qq update
 - sudo apt-get install -y --allow-downgrades subversion=1.7.22-1+WANdisco libsvn1=1.7.22-1+WANdisco
@@ -21,8 +21,10 @@ cache:
   - node_modules
 env:
   global:
+  - API_URL=https://deploy.mendix.com/api/1
   - TEAM_SERVER_URL=https://teamserver.sprintr.com
   - BRANCH_NAME=trunk
+  - secure: U5DIUrqR6L2b44yqjDC2J2TJ0h1T+aJLscJQAMGXFJQpWM9oEa/eo1jQYTgGQwAHBxsJJygVc+p0GKq1Qs0KRAxmUKQ9Xu+J169JtKdEc5SPFBbHrKBknGXM3MGi6Fpf/7s8Tw/0kqvz6messEv1YhkCIC6l9dsJKMaiqqG0ztSm5PQqkoWSLsdFP1goL7zJ9DRjTfHlFQtWjzIkMJMPZPhXi9ak/bUYZ8jySx61fNBbVokmACkFreWVl7xUVl1dIbTNz7pjSd2UwPVigMlpGRRdulq86w4tBF8o9qiXbr6i0/k2I8AV1HULbX/2+SFdI6LNAt/xq6ivIVDfHc9aUMcezbyVGinseAyR9/R3WqXW5baAOCtQzmkHEOZRV6ZSi6B17mV/128QfwDvJDlKMV/0oFXUZ2E6YxJiBySaanXRerN6o/6jl50YzMX1O56TGHhkkXbCfTcooEc6laN2KYz//Be87ViUaVQSodHEKDElHiIOTsZvZItgTpvHRxjRgkyBPaZc+nXGh0rSVf1UmQhFKSvvhwJ0tQTG+apCCO6UW0NBkxLHwTWdR+BfEN/QeMKahIH8cVuZJD7KLGmlLOzCnG6AynjWevFPaz6L2P9azq6oZj11cRKSNUtqx6IMdnQDo61ORPpjLoHOkYUCTrl2EIitJWDs7kb6v//meog=
   - PROJECT_ID=d424a4fd-9473-4b53-94a5-99ad227c2278
   - MX_USER=as@flockofbirds.org
   - secure: iexj9Th1Tq07AWIK7MyvrlFCVI7JhfQ3D5zLJSuo78ZNaMD+gl9Badba39fAs9mLSdunNJ/99Cn/vQkR9ce6NFXZ2INvhnG3AzCDyUiwVGz8f6GRrY3QYb6mRwSiDirARzyxfTCLUHwlHMUUiVVok8ajtinzGTWBSRQ6fLoN7XoUjsMGJtnnWRjcULbiCZ6OgZ8seNw9Jl24NejxII3quXtSck7tMYmKMiKiApdQm3PFd74/Wjgc5PAxFtNWclvsDok1UeVWL5cHR4/E38qOvPEM4XEE39zHzQxbTsLyvJjvbVt2vbkACVw+pNHH750RU4nigqTAN6oFhpow/lweKNuNZPjcwMg+pOJeClDC29kg4GB71jg7OFFmEiM4ewKjRlE6AwHsV02JIIdDAF3pYvfFO9zZ3nYT7A5g8A40XnwAX4XaQnKymrW8jIPYPe8hKv7ll4zeWv3H4T5vkQNxaZwGtL4aWUXKZ8KURDfPH/OVT2ltIpQbJ3AQ6j3pO0y+OkRDw1HP5bp/t+q+C1VV1iuJivOqzjTGTH3Yzt1Auz8ydtKEiavdQu3SF4J6K+NvMRXQZhue2774uR51/tFYtjb4OLQQN4U3eYrCDAcj5Mt/iwwLBi7E+cNwPhAHr7hwdqJ6SfiQwCc/Icy3updRhiuwFYdXCpfN0UAnv1Ol7AE=

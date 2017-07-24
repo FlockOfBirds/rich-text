@@ -5,12 +5,13 @@
   "description": "Rich inline or toolbar text editing",
   "scripts": {
     "pretest": "tsc && npm run lint && grunt release",
-    "test": "npm run unitTest && npm run updateProject",
+    "test": "npm run unitTest && npm run updateProject && npm run deployApp",
     "unitTest": "karma start --single-run --codeCoverage && node tests/remap.js",
     "lint": "tslint -c tslint.json '**/*.ts' '**/*.tsx' --exclude '**/node_modules/**'",
     "build": "grunt release",
     "start": "nodemon --watch webpack.config.js --watch Gruntfile.js --exec \"grunt",
-    "updateProject": "ts-node -P tests/scripts/tsconfig.json tests/scripts/UpdateMxProject.ts"
+    "updateProject": "ts-node -P tests/scripts/tsconfig.json tests/scripts/UpdateMxProject.ts",
+    "deployApp": "ts-node -P tests/scripts/tsconfig.json tests/scripts/DeployMxApp.ts"
   },
   "repository": {
     "type": "git",

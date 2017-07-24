@@ -3,7 +3,9 @@ import * as fs from "fs";
 import * as path from "path";
 
 interface Settings {
+    apiUrl: string;
     branchName: string;
+    key: string;
     password: string;
     projectId: string;
     teamServerUrl: string;
@@ -19,7 +21,9 @@ export const getSettings = (): Settings => {
     } else if (process.env.CI){
         // TODO check travis running?
         return {
+            apiUrl: process.env.API_URL,
             branchName: process.env.BRANCH_NAME, // trunk
+            key: process.env.API_KEY,
 // Secure Mendix account password with travis cli > travis encrypt MX_PASSWORD=yourSecretPassword --add env.global
             password: process.env.MX_PASSWORD,
             projectId: process.env.PROJECT_ID, // App ID like d424a4fd-9473-4b53-94a5-99ad227c2278
