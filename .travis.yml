@@ -36,3 +36,4 @@ deploy:
   on:
     repo: Andries-Smit/rich-text
     branch: travis
+    tags: true
