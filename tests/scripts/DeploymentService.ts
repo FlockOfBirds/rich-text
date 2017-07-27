@@ -1,4 +1,4 @@
-// tslint:disable:rule object-literal-sort-keys max-line-length
+// tslint:disable:rule object-literal-sort-keys max-line-length no-console
 import { Headers, RequestAPI, get, post } from "request";
 import { getRequest, postRequest, uploadFile } from "./Service";
 
@@ -247,6 +247,48 @@ export class DeploymentService {
         });
     }
 
+    waitForSandboxStart(appId: string, timeOutSeconds: number): Promise<boolean> {
+        return new Promise<boolean>(async (resolve, reject) => {
+            const environmentInfo = await this.getEnvironment(appId, "Sandbox");
+            const url = environmentInfo.Url + "/xas/";
+            const date = Date.now();
+            const checkStatus = () => {
+                const duration = (Date.now() - date) / 1000;
+
+                if (duration > timeOutSeconds) {
+                    reject(`Sandbox starting timed out after ${timeOutSeconds}`);
+                    return;
+                }
+                setTimeout(async () => {
+                    try {
+                        const statusCode = await this.getHttpStatusCode(url);
+                        // console.log(statusCode);
+                        if (statusCode === 401) {
+                             resolve(true);
+                        } else if (statusCode === 503) {
+                            process.stdout.write(". ");
+                            checkStatus();
+                        } else {
+                            reject("Error wait for start sandbox " + url + " code: " + statusCode);
+                        }
+                    } catch (startStatusError) {
+                        reject(startStatusError);
+                    }
+                }, 1000);
+            };
+            console.log("Wait 60s before build start the transport");
+            setTimeout(checkStatus, 60 * 1000);
+        });
+    }
+
+    getHttpStatusCode(url: string): Promise<number> {
+        return new Promise<number>((resolve, reject) => {
+            get(url, (error: any, response: any) => {
+                resolve(response.statusCode);
+            });
+        });
+    }
+
     /**
      * Uploads a deployment package from the local system to a specific app. This package can then be transported to a specific environment for deployment.
      * @param appId Subdomain name of an app.
@@ -285,6 +327,7 @@ export class DeploymentService {
             })
         });
     }
+
     /*
      TODO:
         List Environment Backups

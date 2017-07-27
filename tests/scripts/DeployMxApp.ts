@@ -32,27 +32,35 @@ async function deployApp() {
             const latestBuiltRevision = branch.LatestTaggedVersion.substring(branch.LatestTaggedVersion.lastIndexOf(".") + 1);
             if (latestBuiltRevision === branch.LatestRevisionNumber.toString()) {
                 console.log("It is not needed to build, as the latest revision is already built.");
+                resolve(true);
                 return;
             }
-            const versionWithoutRevision = branch.LatestTaggedVersion.substring(0, branch.LatestTaggedVersion.lastIndexOf("."));
-            console.log("Start build:", appName, branchName, latestBuiltRevision, versionWithoutRevision);
-            const buildAction = await build.startBuild(appName, branchName, latestBuiltRevision, versionWithoutRevision);
+            const nextRev = branch.LatestRevisionNumber.toString();
+            console.log("Start build:", appName, branchName, nextRev, version);
+            const buildAction = await build.startBuild(appName, branchName, nextRev, version);
             console.log("Wait for build:", appName, buildAction.PackageId);
             const deployPackage = await build.waitForBuild(appName, buildAction.PackageId, 600);
             if (deployPackage.Status !== "Succeeded") {
                 console.log("No build succeeded within 10 minutes.");
+                reject("No build succeeded within 10 minutes.");
                 return;
             }
-            console.log("Stop app:", appName, environment);
-            await deploy.stopApp(appName, environment);
-            console.log("Clean environment:", appName, environment);
-            await deploy.cleanApp(appName, environment);
-            console.log("Transport package:", appName, environment, buildAction.PackageId);
-            await deploy.transportPackage(appName, environment, buildAction.PackageId);
-            console.log("Start app:", appName, environment);
-            const startJob = await deploy.startApp(appName, environment);
-            console.log("Wait for startup:", appName, environment, startJob.JobId);
-            const started = await deploy.waitForStart(appName, environment, startJob.JobId, 600);
+            let started = false;
+            if (environment === "Sandbox") {
+                // Build in the Sandbox does automatically transport and and restarts after 60 seconds
+                started = await deploy.waitForSandboxStart(appName, 600);
+            } else {
+                console.log("Stop app:", appName, environment);
+                await deploy.stopApp(appName, environment);
+                console.log("Clean environment:", appName, environment);
+                await deploy.cleanApp(appName, environment);
+                console.log("Transport package:", appName, environment, buildAction.PackageId);
+                await deploy.transportPackage(appName, environment, buildAction.PackageId);
+                console.log("Start app:", appName, environment);
+                const startJob = await deploy.startApp(appName, environment);
+                console.log("Wait for startup:", appName, environment, startJob.JobId);
+                started = await deploy.waitForStart(appName, environment, startJob.JobId, 600);
+            }
 
             if (started === true) {
                 console.log("App successfully started.");

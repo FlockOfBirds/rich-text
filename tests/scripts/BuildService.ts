@@ -1,4 +1,4 @@
-// tslint:disable:rule object-literal-sort-keys max-line-length
+// tslint:disable:rule object-literal-sort-keys max-line-length no-console
 import { Headers, RequestAPI, get, post } from "request";
 import { deleteRequest, getFile, getRequest, postRequest } from "./Service";
 
@@ -62,10 +62,12 @@ export class BuildService {
                     try {
                         const deployPackage = await this.getPackage(appId, packageId);
                         if (deployPackage.Status === "Succeeded") {
+                            console.log("Build completed");
                             resolve(deployPackage);
                         } else if (deployPackage.Status === "Failed") {
-                            reject("Build status is Failed");
+                            reject("Build status is 'Failed' check the 'Latest build output' on https://cloud.home.mendix.com DEPLOY > Environments" );
                         } else {
+                            process.stdout.write(". ");
                             checkStatus();
                         }
                     } catch (getPackageError) {
@@ -73,6 +75,7 @@ export class BuildService {
                     }
                 }, 10 * 1000);
             };
+            process.stdout.write(". ");
             checkStatus();
         });
     }
