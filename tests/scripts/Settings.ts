@@ -46,15 +46,15 @@ export type PartialSettings = Partial<Settings>;
 
 export const getSettings = (): Settings => {
     const localSettingFile = path.resolve(__dirname, "localSettings.ts");
-    console.log("localSettingFile", localSettingFile);
     let settings: PartialSettings = defaultSettings;
     if (fs.existsSync(localSettingFile)) {
-        console.log("Running with local settings");
+        console.log("Running with local settings from " + localSettingFile);
         const localFileSettings = require("./localSettings").settings;
         console.log("localFileSettings", localFileSettings);
         settings = { ...settings, ...localFileSettings };
         checkSettings(settings);
     } else if (process.env.CI) {
+        console.log("Running with CI settings");
         checkEnvVars();
         settings = {
             apiUrl: process.env.MX_API_URL || defaultSettings.apiUrl,
@@ -67,6 +67,7 @@ export const getSettings = (): Settings => {
             password: process.env.MX_PASSWORD,
             projectId: process.env.MX_PROJECT_ID, // App ID like d424a4fd-9473-4b53-94a5-99ad227c2278
             teamServerUrl: process.env.MX_TEAM_SERVER_URL || defaultSettings.teamServerUrl,
+            testProjectName: process.env.MX_TEST_PROJECT_NAME || defaultSettings.testProjectName,
             user: process.env.MX_USER // Mendix account login: user@example.com;
         };
     } else {

@@ -5,7 +5,7 @@ import { getSettings } from "./Settings";
 import * as archiver from "archiver";
 
 const settings = getSettings();
-console.log("Update Mendix project with settings: " + JSON.stringify(settings));
+console.log("Build and deploy Mendix project with settings: " + JSON.stringify(settings));
 
 const appName = settings.appName;
 const environment: EnvironmentMode = settings.environment;
