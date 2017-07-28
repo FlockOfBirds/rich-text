@@ -1,26 +1,18 @@
-// tslint:disable:rule no-console no-var-requires max-line-length
+// tslint:disable:rule no-console max-line-length
 import { DeploymentService, EnvironmentMode } from "./DeploymentService";
 import { BuildService } from "./BuildService";
 import { getSettings } from "./Settings";
-import * as fs from "fs";
 import * as archiver from "archiver";
-import * as path from "path";
 
-const pkg: any = require("../../package.json");
 const settings = getSettings();
-
-const distFolder = path.resolve(__dirname, "../../dist");
-const buildFolder = path.resolve(distFolder, "mxbuild");
-const releaseFolder = path.resolve(distFolder, "release");
-const projectUrl = settings.teamServerUrl + "/" + settings.projectId;
-const deploy = new DeploymentService(settings.apiUrl, settings.user, settings.key);
-const build = new BuildService(settings.apiUrl, settings.user, settings.key);
-const version: string = pkg.version;
-const widgetName: string = pkg.widgetName;
+console.log("Update Mendix project with settings: " + JSON.stringify(settings));
 
 const appName = settings.appName;
 const environment: EnvironmentMode = settings.environment;
 const branchName = settings.branchName;
+
+const deploy = new DeploymentService(settings.apiUrl, settings.user, settings.key);
+const build = new BuildService(settings.apiUrl, settings.user, settings.key);
 
 deployApp().then(success => process.exit(0), error => process.exit(1));
 
@@ -36,8 +28,8 @@ async function deployApp() {
                 return;
             }
             const nextRev = branch.LatestRevisionNumber.toString();
-            console.log("Start build:", appName, branchName, nextRev, version);
-            const buildAction = await build.startBuild(appName, branchName, nextRev, version);
+            console.log("Start build:", appName, branchName, nextRev, settings.widget.version);
+            const buildAction = await build.startBuild(appName, branchName, nextRev, settings.widget.version);
             console.log("Wait for build:", appName, buildAction.PackageId);
             const deployPackage = await build.waitForBuild(appName, buildAction.PackageId, 600);
             if (deployPackage.Status !== "Succeeded") {

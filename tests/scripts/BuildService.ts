@@ -35,7 +35,13 @@ export class BuildService {
     }
 
     startBuild(appId: string, branchName: string, revision: string, version: string): Promise<Build> {
-        const timeStamp = Date.now().toLocaleString();
+        const currentDate = new Date();
+        const timeStamp = currentDate.getFullYear() + "-"
+                        + (currentDate.getMonth() + 1) + "-"
+                        + currentDate.getDate() + " "
+                        + currentDate.getHours() + ":"
+                        + currentDate.getMinutes() + ":"
+                        + currentDate.getSeconds();
         return postRequest<Build>({
             url: `${this.baseUrl}/apps/${appId}/packages/`,
             headers: this.headers,
@@ -43,7 +49,7 @@ export class BuildService {
                 Branch: branchName,
                 Revision: revision,
                 Version: version,
-                Description: `CI Build {timeStamp}`
+                Description: `CI Build ${timeStamp}`
             })
         });
     }
