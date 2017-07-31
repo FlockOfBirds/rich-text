@@ -64,5 +64,3 @@ To run the project unit tests with code coverage, results can be found at `dist/
 or run the test continuously during development:
 
     > karma start
-
-Hopa

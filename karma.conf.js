@@ -25,7 +25,7 @@ module.exports = function(config) {
         });
     }
 
-    var configuration = {
+    const configuration = {
         basePath: "",
         frameworks: [ "jasmine" ],
         files: [
@@ -43,7 +43,6 @@ module.exports = function(config) {
         logLevel: config.LOG_INFO,
         autoWatch: true,
         browsers: [ "Chrome" ],
-        // e.g see https://swizec.com/blog/how-to-run-javascript-tests-in-chrome-on-travis/swizec/6647
         customLaunchers: {
             Chrome_travis_ci: {
                 base: "Chrome",

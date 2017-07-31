@@ -22,7 +22,6 @@
   },
   "exclude": [
     "dist/",
-    "node_modules/",
-    "tests/scripts"
+    "node_modules/"
   ]
 }
