@@ -9,8 +9,7 @@ before_install:
 - export CHROME_BIN=chromium-browser
 - export DISPLAY=:99.0
 - sh -e /etc/init.d/xvfb start
-- wget -q -O - http://opensource.wandisco.com/wandisco-debian.gpg | sudo apt-key add
-  -
+- wget -q -O - http://opensource.wandisco.com/wandisco-debian.gpg | sudo apt-key add -
 - sudo sh -c 'echo "deb http://opensource.wandisco.com/debian/ wheezy svn17" > /etc/apt/sources.list.d/wandisco-subversion.list'
 - sudo apt-get -qq update
 - sudo apt-get install -y --allow-downgrades subversion=1.7.22-1+WANdisco libsvn1=1.7.22-1+WANdisco
@@ -26,7 +25,7 @@ env:
   - MX_APP_NAME=texteditorwidget
   - MX_TEAM_SERVER_URL=https://teamserver.sprintr.com
   - MX_BRANCH_NAME=trunk
-  - secure: ZAFagdWRAiDPp+lGH2rra4Hz4y0jV8TkBvWpj7fahC8l3t5YDH89mxtJUDNF6lV+GUB4o08lSWsnKHCP4Qj3A/n5mws27csvZQF//0mP5rXGEGQg/esDUwSJCYNc3NKG0OZsHi8X3AVF5ysCJBULKgr8C1P8GfPSDY4oEaIkLs38/FKRkMnvyTQl4cyybEKi3nDS/BCXJuh4XiRAJGQ2QdF6karZkWPBjTYne2hh0H95+b0NEgg/5JC6r4fFPuIpZPaavyaCc5teYCBdeqQ5l+8iQ+Qcc6FEq3hd6VaEdPslzMefeBHU3NL50j42IDxMbSVPtMGtpWEgNMX546zaARVBwz7ai3oabtg5IacBnT2IuCtZ1NeCWTyceBX164M1sKm5DW88duN2FHgrxVIvUEH4NzuhdGXlxDsaTP1RUGTB/sPl/onZeXXLhah228r/Iijn4g+MiPairgdY/wq0mgUXfYHcI1EP6KU8IQH2drDetxV0DiDjQFB7M5wimvipQbfYEsTVa3uNYpmfSTgOAXewYwL5dlw8va9zBseX1ykuTqp197P4c0J8Oq/ooz0TU+CdQhGT7VUzATFYYQUyGqNgx7VsX8GNONeLkX7ywpsKNciUSQWWvUQ1b7AL1otqs+UqzwzeAe4pwOi30fNzlDLp7v9opbonDXADY1INOjs=
+  - secure: MCDnNQ/LhHwnKQQRRPAi82DnRnYkagWCVVG5DNBDEzX0A9XZG44yvtyC7iVVajNM8SdNnXIblmW3rkK1wuoB6dVlNzRPMjcfX5vJC7qgQI+6HyYzaCM52sqQMXTbNO0kTXeBxBQS4+GvrwNOnrb+aQToqF4fJEOgnPjTG+o6EH7gGJRfJDuLgfPIYrb7vlAXfEsHnc9G6Ds6X3kMqWBuCoLJH9OjME39seUEaHlmfDeskVc78RmNPbJMjl1AMTXcwr4uIRByFGFkRVSvMykQpdssCk14T8A+750zhoESQLKG9qC2tY04ClCx1rtTaD9EC9KSwJMzjSq51MVh5vF8MAjvoU2PSZOtA1m0X87Q597gcQGbrtwLXaKp9n1EXiWS4gVJv/WYYQ6vOj/juCzjFzUMBJOyiyIq74mj1oDa6cIDfzuFXFUxf3m/ZdfZS0a639ZB/KUdUPtlOPNBd46FYypxVh8rISDW6XDK7ohToUk7zSEdlkpEHn9KIZGGZeUO6HopTkGIvlxGbrvOylos+wAaBPz6fMxhuk4N1eS3LdCqkAciMSj+coFuxPBZ891mmuz+x2V5AJPUsBjiclghXWr9dSn+NHySA2st6eN3QGX/J2Hd+XksfvAn2fHim+oActpWPDT4nn61VyV7p8C5DXtYbffIE42NojqZO61jsCs=
   - MX_ENVIRONMENT=Sandbox
   - MX_PROJECT_ID=8648ccda-9281-4768-abb2-8ce61a80e2f1
   - MX_USER=ci@flockofbirds.nl
