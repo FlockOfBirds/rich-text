@@ -4,18 +4,24 @@
   "version": "1.0.0",
   "description": "Rich inline or toolbar text editing",
   "scripts": {
-    "pretest": "tsc && npm run lint && grunt release",
-    "test": "npm run unitTest && npm run updateProject && npm run deployApp && npm run e2eTest",
-    "unitTest": "karma start --single-run --codeCoverage && node tests/remap.js",
-    "e2eTest": "tsc -p ./tests/e2e/tsconfig.json && wdio ./tests/e2e/wdio.conf.js",
-    "lint": "tslint -c tslint.json '**/*.ts' '**/*.tsx' --exclude '**/node_modules/**'",
-    "build": "grunt release",
     "start": "nodemon --watch webpack.config.js --watch Gruntfile.js --exec \"grunt",
+    "emit": "tsc",
+    "pretest": "tsc && npm run lint && npm run build",
+    "test": "npm run test:unit && npm run deploy && npm run test:e2e",
+    "test:dev" : "karma start",
+    "test:unit": "karma start --single-run --codeCoverage && node tests/remap.js",
+    "test:e2e": "tsc -p ./tests/e2e/tsconfig.json && wdio ./tests/e2e/wdio.conf.js",
+    "test:e2e:dev": "tsc -p ./tests/e2e/tsconfig.json && set DEBUG=true&& wdio ./tests/e2e/wdio.conf.js",
+    "lint": "tslint -c tslint.json '**/*.ts' --exclude '**/node_modules/**'",
+    "lint:fix": "npm run lint -- --fix",
+    "deploy" : " npm run updateProject && npm run deployApp",
+    "build:prod": "grunt release",
+    "build:dev": "grunt clean build",
     "updateProject": "node ./node_modules/mendix-widget-build-script/dist/UpdateMxProject.js",
     "deployApp": "node ./node_modules/mendix-widget-build-script/dist/DeployMxApp.js"
   },
   "pre-commit": [
-    "pretest",
+    "emit",
     "lint"
   ],
   "repository": {

@@ -1,10 +1,12 @@
+const debug = process.env.DEBUG;
+
 exports.config = {
     host: "127.0.0.1",
     port: 4444,
     specs: [ "./dist/e2e/**/*.spec.js" ],
-    maxInstances: 5,
+    maxInstances: debug ? 1 : 5,
     capabilities: [ {
-        maxInstances: 5,
+        maxInstances: debug ? 1 : 5,
         browserName: "chrome"
     } ],
     sync: true,
@@ -12,7 +14,7 @@ exports.config = {
     coloredLogs: true,
     bail: 0,
     screenshotPath: "dist/wdio/",
-    baseUrl: "https://texteditorwidget.mxapps.io/",
+    baseUrl: debug ? "http://localhost:8080/" : "https://texteditorwidget.mxapps.io/",
     waitforTimeout: 10000,
     connectionRetryTimeout: 90000,
     connectionRetryCount: 0,
@@ -20,10 +22,10 @@ exports.config = {
 
     framework: "jasmine",
     reporters: [ "spec" ],
-
+    execArgv: debug ? [ "--inspect" ] : undefined,
     // Options to be passed to Jasmine.
     jasmineNodeOpts: {
-        defaultTimeoutInterval: 10 * 1000,
+        defaultTimeoutInterval: debug ? (60 * 60 * 1000) : (10 * 1000),
         expectationResultHandler: function(passed, assertion) {
             if (passed) {
                 return;
