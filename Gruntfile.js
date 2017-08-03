@@ -79,7 +79,8 @@ module.exports = function(grunt) {
                 "./dist/tsc/**/*",
                 "./dist/testresults/**/*",
                 "./dist/MxTestProject/deployment/web/widgets/" + pkg.widgetName + "/*",
-                "./dist/MxTestProject/widgets/" + pkg.widgetName + ".mpk"
+                "./dist/MxTestProject/widgets/" + pkg.widgetName + ".mpk",
+                "./dist/wdio/**/*"
             ]
         },
 
