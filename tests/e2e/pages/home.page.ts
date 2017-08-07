@@ -1,4 +1,3 @@
-
 class HomePage {
 
     public get richText1() { return browser.element(".mx-name-richText1 .ql-editor"); }
