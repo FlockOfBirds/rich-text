@@ -1,19 +1,42 @@
 sudo: required
 dist: trusty
-
 language: node_js
 node_js:
-  - "6"
-
+- '6'
 before_install:
-  - npm i -g npm
-  - export CHROME_BIN=chromium-browser
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
-
+- npm i -g npm@5
+- npm install grunt-cli -g
+- export CHROME_BIN=chromium-browser
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
+- wget -q -O - http://opensource.wandisco.com/wandisco-debian.gpg | sudo apt-key add -
+- sudo sh -c 'echo "deb http://opensource.wandisco.com/debian/ wheezy svn17" > /etc/apt/sources.list.d/wandisco-subversion.list'
+- sudo apt-get -qq update
+- sudo apt-get install -y --allow-downgrades subversion=1.7.22-1+WANdisco libsvn1=1.7.22-1+WANdisco
+- svn --version
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
-
+- bash <(curl -s https://codecov.io/bash)
 cache:
   directories:
-    - "node_modules"
+  - node_modules
+env:
+  global:
+  - MX_API_URL=https://deploy.mendix.com/api/1
+  - MX_APP_NAME=texteditorwidget
+  - MX_TEAM_SERVER_URL=https://teamserver.sprintr.com
+  - MX_BRANCH_NAME=trunk
+  - secure: MCDnNQ/LhHwnKQQRRPAi82DnRnYkagWCVVG5DNBDEzX0A9XZG44yvtyC7iVVajNM8SdNnXIblmW3rkK1wuoB6dVlNzRPMjcfX5vJC7qgQI+6HyYzaCM52sqQMXTbNO0kTXeBxBQS4+GvrwNOnrb+aQToqF4fJEOgnPjTG+o6EH7gGJRfJDuLgfPIYrb7vlAXfEsHnc9G6Ds6X3kMqWBuCoLJH9OjME39seUEaHlmfDeskVc78RmNPbJMjl1AMTXcwr4uIRByFGFkRVSvMykQpdssCk14T8A+750zhoESQLKG9qC2tY04ClCx1rtTaD9EC9KSwJMzjSq51MVh5vF8MAjvoU2PSZOtA1m0X87Q597gcQGbrtwLXaKp9n1EXiWS4gVJv/WYYQ6vOj/juCzjFzUMBJOyiyIq74mj1oDa6cIDfzuFXFUxf3m/ZdfZS0a639ZB/KUdUPtlOPNBd46FYypxVh8rISDW6XDK7ohToUk7zSEdlkpEHn9KIZGGZeUO6HopTkGIvlxGbrvOylos+wAaBPz6fMxhuk4N1eS3LdCqkAciMSj+coFuxPBZ891mmuz+x2V5AJPUsBjiclghXWr9dSn+NHySA2st6eN3QGX/J2Hd+XksfvAn2fHim+oActpWPDT4nn61VyV7p8C5DXtYbffIE42NojqZO61jsCs=
+  - MX_ENVIRONMENT=Sandbox
+  - MX_PROJECT_ID=8648ccda-9281-4768-abb2-8ce61a80e2f1
+  - MX_USER=ci@flockofbirds.nl
+  - secure: fzIxF5ER2BZ55xcGTzLML9vAp0t7sVIIDrvJaTcX1VOkPk6pWwWzFQFT5o/8cN9W/XEQfWWkbyfL1rp9+WsE9DgGA7NK3lfSIhC87cxHT9mig9EO5zCOX9Chtxe+wIvfN/dAGFhvr3SOBr5JMn3BvwPGJXdpStK4+ehZjbBaX73odQdT3aa4MYUc9tH3JFMpcORU2WlpqfJogn03BcXM1Qkxh6gNEB+1Q7XraNIrJUsybw8NDrmZejYLCIJYSAWTXfK8tD3QUZDFqOB0j2MVSr1RBy9FXA6TYgYamRPJmzPp65rC94x30KqbOnRbD97SKnSZ887lGnA0s+dhrOqcGTXpdvPAb4YY7QUHEyNRy68CXBv8F4yxl/BTBG5MgHLHUoHWvUu5nJ0axh9SPIeloglpckEEUCoo9ZW5QBcLtKHgi0GN0wPjKS7n+EDq94ZoA2j+V+lhD7uwgnRvIrFVVqEacJPxB7yI+EX0mUkiuVr0+fus20u+JCQ96eCSfZLZhLRKMSx+Jiqk/lRjlgMKwY0vPP8827FySby72nxg8jaMNbCC6/uTG77l81cshoejCPygahiRQ261dUswDr0/XDoihss2vp4NUKWGswGjo9HRQ2RyIC/gwUIUsKL4lIW2Of9utQA/T2bsZWlnhL3TrxTtM4uCD9ypWSZcOWVafIM=
+deploy:
+  provider: releases
+  api_key:
+    secure: mQtgwYHfLN8JGuTUQfKrBxJsGw5oG9ii0qa8gBDQL5uz2XHxj7BYzuUfbu9P0emWp4vWImLaIp398GM1EicoBvCSSlJrfW6KnlNz+VT3c93wm1SVf+Vjk6Pm5Qjnyk43R11L0xhSumxPk+BWycdQ0yaNmmjRLriVbEz2d9JnHMcdYBRXcIC0HrKFgS8KEiuPzxaHcqALOVzczGuVe3sCHhDZ0pmlpQlu+zzBLjN18UbS2H3lx7wGg5pcKzKuuo2DxxZdLiMGCbh3bfBaWwCBHZ3nDESSj4UbZyhPmVCYijNRLauYQJgg2wDO3g5lD3UNIZ5Hx7zMUX1h0b+DPCaAX7wsuxgHTF243Nx+Qcp5R/FEKqNHYRqYFnhHfvx+ABEaZEt5xAqlSV44LhQuW+DAA/X/3+/BZSOx7lO+yLkEWDkKaOwzLcLMue0eBw2TZqciXvrypzz3JVcx/d0VeSbSnmmAT7eTRxdbxuFxCMc+tPw59kL+hbG7Rq4I/wWjtoi4AuEALn++au4Wm5zIkQmpMoCFNJ9UwWHas4SCDh140sGMYj8DJC7YghWW2SnHoOhFzpgMtOvoptpN2c5rjFBhOt3rIlsIE1TjlPztihSH69rd2cm3FgM7iljjdd3E6XwrXC5mTMWpcOfTrk4aR8xJnIqQNmPmUusG5q9ZnxBcmRw=
+  file_glob: true
+  file: dist/release/*
+  skip_cleanup: true
+  on:
+    repo: Andries-Smit/rich-text
+    tags: true
