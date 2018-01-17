@@ -124,7 +124,7 @@ describe("RichText", () => {
 
             expect(textEditor).toBeElement(
                 createElement("div", { className: "widget-rich-text disabled-text" },
-                    createElement("div", { dangerouslySetInnerHTML: { __html: defaultProps.value } }))
+                    createElement("div", { className: "ql-editor", dangerouslySetInnerHTML: { __html: defaultProps.value } }))
             );
         });
 

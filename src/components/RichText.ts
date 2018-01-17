@@ -60,6 +60,7 @@ export class RichText extends Component<RichTextProps> {
                 })
             },
             createElement("div", {
+                className: this.props.readOnly && this.props.readOnlyStyle === "text" ? "ql-editor" : undefined,
                 dangerouslySetInnerHTML: this.getReadOnlyText(),
                 ref: this.setRichTextNode,
                 style: this.props.style
@@ -104,7 +105,7 @@ export class RichText extends Component<RichTextProps> {
 
     private getReadOnlyText(): { __html: string } | undefined {
         return this.props.readOnly && this.props.readOnlyStyle === "text"
-            ? { __html: sanitizeHtml(this.props.value) }
+        ? { __html: sanitizeHtml(this.props.value, { allowedAttributes: { "*": [ "class" ] } }) }
             : undefined;
     }
 
