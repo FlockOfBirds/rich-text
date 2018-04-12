@@ -28,7 +28,7 @@ export interface CommonRichTextProps {
 
 export interface RichTextProps extends CommonRichTextProps {
     className?: string;
-    onChange: (value: string) => void;
+    onChange: (value: string, event: KeyboardEvent) => void;
     onBlur: () => void;
     style?: object;
 }
@@ -175,7 +175,7 @@ export class RichText extends Component<RichTextProps> {
         if (this.quill) {
             const value = this.quill.root.innerHTML !== this.undoDefault ? this.quill.root.innerHTML : "";
             if (this.props.value !== value) {
-                this.props.onChange(value);
+                this.props.onChange(value, event as KeyboardEvent);
                 this.textChanged = true;
             }
         }
