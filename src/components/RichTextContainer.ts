@@ -29,7 +29,7 @@ export type ReadOnlyStyle = "bordered" | "text" | "borderedToolbar";
 
 export default class RichTextContainer extends Component<RichTextContainerProps, RichTextContainerState> {
     private subscriptionHandles: number[] = [];
-    private defaultValue: string | null;
+    private defaultValue: string | null | undefined;
     private isEditing = false;
 
     constructor(props: RichTextContainerProps) {
@@ -125,7 +125,8 @@ export default class RichTextContainer extends Component<RichTextContainerProps,
         }
     }
 
-    private handleOnChange(value: string) {
+    private handleOnChange(value: string, event: KeyboardEvent) {
+        event.cancelBubble = true;
         if (!this.props.mxObject) {
             return;
         }
