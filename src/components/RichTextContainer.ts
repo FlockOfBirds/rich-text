@@ -161,7 +161,7 @@ export default class RichTextContainer extends Component<RichTextContainerProps,
 
         if (onChangeMicroflow) {
             window.mx.ui.action(onChangeMicroflow, {
-                origin: this.props.mxform,
+                origin: mxform,
                 params: {
                     guids: [ mxObject.getGuid() ],
                     applyto: "selection"
@@ -174,10 +174,10 @@ export default class RichTextContainer extends Component<RichTextContainerProps,
             const context = new mendix.lib.MxContext();
             context.setContext(mxObject.getEntity(), mxObject.getGuid());
             window.mx.data.callNanoflow({
-                context,
-                error: error => window.mx.ui.error(`Error while executing nanoflow: + ${onChangeNanoflow} : ${error.message}`),
                 nanoflow: onChangeNanoflow,
-                origin: mxform
+                origin: mxform,
+                context,
+                error: error => window.mx.ui.error(`Error while executing the on change nanoflow: ${error.message}`)
             });
         }
     }
