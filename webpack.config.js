@@ -2,10 +2,10 @@ const webpack = require("webpack");
 const path = require("path");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
-
 const pkg = require("./package");
 const widgetName = pkg.widgetName;
-const name = pkg.widgetName.toLowerCase();
+// const name = pkg.widgetName.toLowerCase();
+const name = "richtext";
 
 const widgetConfig = {
     entry: `./src/components/${widgetName}Container.ts`,
@@ -15,7 +15,7 @@ const widgetConfig = {
         libraryTarget: "umd"
     },
     resolve: {
-        extensions: [ ".ts", ".js", ".json" ],
+        extensions: [ ".ts", ".js" ],
         alias: {
             "tests": path.resolve(__dirname, "./tests")
         }
@@ -33,20 +33,13 @@ const widgetConfig = {
             }) }
         ]
     },
+    mode: "development",
     devtool: "source-map",
     externals: [ "react", "react-dom" ],
     plugins: [
-        new CopyWebpackPlugin([
-            { from: "src/**/*.js" },
-            { from: "src/**/*.xml" },
-            { from: "src/**/*.png", to: `src/com/mendix/widget/custom/${name}/` }
-        ], {
-            copyUnmodified: true
-        }),
+        new CopyWebpackPlugin([ { from: "src/**/*.xml" } ], { copyUnmodified: true }),
         new ExtractTextPlugin({ filename: `./src/com/mendix/widget/custom/${name}/ui/${widgetName}.css` }),
-        new webpack.LoaderOptionsPlugin({
-            debug: true
-        })
+        new webpack.LoaderOptionsPlugin({ debug: true })
     ]
 };
 
@@ -62,11 +55,7 @@ const previewConfig = {
     },
     module: {
         rules: [
-            { test: /\.ts$/, loader: "ts-loader", options: {
-                compilerOptions: {
-                    "module": "CommonJS",
-                }
-            }},
+            { test: /\.ts$/, use: "ts-loader" },
             { test: /\.css$/, use: "raw-loader" },
             { test: /\.scss$/, use: [
                 { loader: "raw-loader" },
@@ -74,11 +63,10 @@ const previewConfig = {
             ] }
         ]
     },
+    mode: "development",
     devtool: "inline-source-map",
     externals: [ "react", "react-dom" ],
-    plugins: [
-        new webpack.LoaderOptionsPlugin({ debug: true })
-    ]
+    plugins: [ new webpack.LoaderOptionsPlugin({ debug: true }) ]
 };
 
 module.exports = [ widgetConfig, previewConfig ];

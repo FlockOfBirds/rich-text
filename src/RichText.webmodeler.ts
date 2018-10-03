@@ -4,7 +4,7 @@ import { RichText, RichTextProps } from "./components/RichText";
 import { RichTextContainerProps } from "./components/RichTextContainer";
 
 import { ValidateConfigs } from "./components/ValidateConfigs";
-import { parseStyle } from "./utils/ContainerUtils";
+// import { parseStyle } from "./utils/ContainerUtils";
 
 // tslint:disable-next-line class-name
 export class preview extends Component<RichTextContainerProps, {}> {
@@ -15,7 +15,7 @@ export class preview extends Component<RichTextContainerProps, {}> {
     }
 
     private static transformProps(props: RichTextContainerProps): RichTextProps {
-        const valueAttribute = props.stringAttribute ? props.stringAttribute.split(".")[ 2 ] : "";
+        const valueAttribute = props.stringAttribute ? props.stringAttribute.value : "";
 
         return {
             editorOption: props.editorOption,
@@ -23,9 +23,9 @@ export class preview extends Component<RichTextContainerProps, {}> {
             customOptions: props.customOptions,
             minNumberOfLines: props.minNumberOfLines,
             maxNumberOfLines: props.maxNumberOfLines,
-            readOnlyStyle: props.mxObject ? props.readOnlyStyle : "bordered",
+            readOnlyStyle: "bordered",
             className: props.class,
-            style: parseStyle(props.style),
+            style: props.style,
             sanitizeContent: props.sanitizeContent,
             readOnly: props.editable === "never",
             recreate: true,
