@@ -19,7 +19,8 @@ export interface CommonRichTextProps {
     readOnly: boolean;
     readOnlyStyle: ReadOnlyStyle;
     theme: Theme;
-    customOptions: { option: string }[];
+    // customOptions: { option: string }[];
+    customOptions?: any;
     minNumberOfLines: number;
     maxNumberOfLines: number;
     recreate?: boolean;
@@ -59,7 +60,7 @@ export class RichText extends Component<RichTextProps> {
                 className: classNames("widget-rich-text", this.props.className, {
                     "has-error": !!this.props.alertMessage,
                     [ RichText.getReadOnlyClasses(this.props.readOnlyStyle) ]: this.props.readOnly,
-                    "buttons-hidden": this.props.editorOption === "custom" && this.props.customOptions.length === 0,
+                    "buttons-hidden": this.props.editorOption === "custom" && this.props.customOptions,
                     "ql-snow": this.props.readOnly && this.props.readOnlyStyle === "text"
                 })
             },
@@ -234,7 +235,7 @@ export class RichText extends Component<RichTextProps> {
             return getAdvancedOptions();
         }
 
-        return getToolbar(this.props.customOptions.length ? this.props.customOptions : [ { option: "spacer" } ]);
+        return getToolbar(this.props.customOptions ? this.props.customOptions : "" as any);
     }
 
     private createKeyboardModule() {

@@ -109,18 +109,6 @@ WARNING disabling this option is a security risk for XSS attacks</description>
                 <enumerationValue key="changeFocus">Focus next</enumerationValue>
             </enumerationValues>
         </property>
-        <!-- <property key="onChangeMicroflow" type="microflow" required="false">
-            <caption>On change microflow</caption>
-            <category>Events</category>
-            <description>Microflow will be triggered when focus is lost and the content has changed</description>
-            <returnType type="Void"/>
-        </property>
-        <property key="onChangeNanoflow" type="nanoflow" required="false">
-            <caption>On change nanoflow</caption>
-            <category>Events</category>
-            <description>Nanoflow will be triggered when focus is lost and the content has changed</description>
-            <returnType type="Void" />
-        </property> -->
         <property key="onChangeAction" type="action" required="false">
             <caption>On change action</caption>
             <category>Events</category>

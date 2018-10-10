@@ -2,18 +2,19 @@ import { CSSProperties, Component, createElement } from "react";
 
 import { CommonRichTextProps, RichText, TabOptions } from "./RichText";
 import { ValidateConfigs } from "./ValidateConfigs";
+// import { AttributeValue } from "typings/pluginWidget";
 
 // import { getValue } from "../utils/ContainerUtils";
 // import { getValue, parseStyle } from "../utils/ContainerUtils";
-// interface WrapperProps {
-//     "class": string;
-//     mxform: mxui.lib.form._FormBase;
-//     mxObject?: mendix.lib.MxObject;
-//     style: string;
-//     readOnly: boolean;
-// }
+interface WrapperProps extends CommonRichTextProps {
+    // "class": string;
+    mxform: mxui.lib.form._FormBase;
+    mxObject?: mendix.lib.MxObject;
+    // style: string;
+    // readOnly: boolean;
+}
 
-export interface RichTextContainerProps extends CommonRichTextProps {
+export interface RichTextContainerProps extends WrapperProps {
     class: string;
     style: CSSProperties;
     stringAttribute: PluginWidget.EditableValue<string>;
@@ -21,24 +22,13 @@ export interface RichTextContainerProps extends CommonRichTextProps {
     editable: "default" | "never";
     onChangeAction?: PluginWidget.ActionValue;
     tabAction: TabOptions;
-}
-
-interface RichTextContainerState {
-    alertMessage: string;
-    value: string;
+    customOptions: PluginWidget.DynamicValue<object[]>;
 }
 
 export type ReadOnlyStyle = "bordered" | "text" | "borderedToolbar";
-// type Handler = () => void;
 
-export default class RichTextContainer extends Component<RichTextContainerProps, RichTextContainerState> {
-    // private defaultValue: string | null | undefined = undefined;
+export default class RichTextContainer extends Component<RichTextContainerProps> {
     private isEditing = false;
-
-    readonly state: RichTextContainerState = {
-        alertMessage: "",
-        value: this.props.stringAttribute.value || ""
-    };
 
     componentWillMount() {
         this.handleOnChange = this.handleOnChange.bind(this);
@@ -46,8 +36,17 @@ export default class RichTextContainer extends Component<RichTextContainerProps,
         this.onFormSubmit = this.onFormSubmit.bind(this);
     }
 
+    // componentWillUpdate() {
+    //     this.onFormSubmit();
+    // }
+    componentDidMount() {
+        // tslint:disable-next-line:no-console
+        console.log(this.props.mxform);
+    }
+
     render() {
         const readOnly = this.isReadOnly();
+
         return createElement(ValidateConfigs, { ...this.props as RichTextContainerProps, showOnError: false },
             createElement(RichText, {
                 editorOption: this.props.editorOption,
@@ -56,16 +55,16 @@ export default class RichTextContainer extends Component<RichTextContainerProps,
                 customOptions: this.props.customOptions,
                 minNumberOfLines: this.props.minNumberOfLines,
                 maxNumberOfLines: this.props.maxNumberOfLines,
-                // readOnlyStyle: this.props.mxObject ? this.props.readOnlyStyle : "bordered",
-                readOnlyStyle: this.props.readOnlyStyle,
+                readOnlyStyle: this.props.stringAttribute.status ? this.props.readOnlyStyle : "bordered",
+                // readOnlyStyle: this.props.readOnlyStyle,
                 className: this.props.class,
                 style: this.props.style,
                 sanitizeContent: this.props.sanitizeContent,
-                value: this.state.value,
+                value: this.props.stringAttribute.value || "",
                 onChange: !readOnly ? this.handleOnChange : undefined,
                 onBlur: !readOnly ? this.executeOnChangeAction : undefined,
                 readOnly,
-                alertMessage: this.state.alertMessage
+                alertMessage: this.props.stringAttribute.validation.join(", ")
             })
         );
     }
@@ -88,7 +87,6 @@ export default class RichTextContainer extends Component<RichTextContainerProps,
     private executeOnChangeAction() {
         if (this.props.onChangeAction) {
             this.props.onChangeAction.execute();
-            // this.defaultValue = this.state.value;
         }
         if (this.isEditing) {
             this.isEditing = false;
