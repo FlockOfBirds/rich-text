@@ -1,175 +1,187 @@
-// import { ShallowWrapper, mount, shallow } from "enzyme";
-// import { createElement } from "react";
+import { ShallowWrapper, mount, shallow } from "enzyme";
+import { createElement } from "react";
 
 // import * as classNames from "classnames";
 
-// import { RichText, RichTextProps } from "../RichText";
-// import { Alert } from "../Alert";
+import { RichText, RichTextProps } from "../RichText";
+import { Alert } from "../Alert";
 
-// describe("RichText", () => {
-//     const shallowRenderTextEditor = (props: RichTextProps) => shallow(createElement(RichText, props));
-//     const fullRenderTextEditor = (props: RichTextProps) => mount(createElement(RichText, props));
-//     let textEditor: ShallowWrapper<RichTextProps, any>;
-//     const defaultProps: RichTextProps = {
-//         customOptions: [],
-//         editorOption: "basic",
-//         maxNumberOfLines: 10,
-//         minNumberOfLines: 10,
-//         sanitizeContent: false,
-//         onChange: jasmine.any(Function),
-//         onBlur: jasmine.any(Function),
-//         readOnly: false,
-//         readOnlyStyle: "bordered",
-//         theme: "snow",
-//         value: "<p>Rich Text</p>"
-//     };
+describe("RichText", () => {
 
-//     describe("that is not read-only", () => {
-//         it("renders the structure correctly", () => {
-//             textEditor = shallowRenderTextEditor(defaultProps);
+    const shallowRenderTextEditor = (props: RichTextProps) => shallow(createElement(RichText, props));
+    const fullRenderTextEditor = (props: RichTextProps) => mount(createElement(RichText, props));
+    let textEditor: ShallowWrapper<RichTextProps, any>;
 
-//             expect(textEditor).toBeElement(
-//                 createElement("div", { className: classNames("widget-rich-text disabled-bordered") },
-//                     createElement("div", { style: { whiteSpace: "pre-wrap" } },
-//                         createElement("div", { className: "widget-rich-text-quill" })
-//                     )
-//                 )
-//             );
-//         });
+    const defaultProps: RichTextProps = {
+        customOptions: [],
+        editorOption: "basic",
+        maxNumberOfLines: 10,
+        minNumberOfLines: 10,
+        sanitizeContent: false,
+        onChange: jasmine.any(Function),
+        onBlur: jasmine.any(Function),
+        readOnly: false,
+        readOnlyStyle: "bordered",
+        theme: "snow",
+        value: "<p>Rich Text</p>"
+    };
 
-//         it("renders a quill editor", () => {
-//             textEditor = shallowRenderTextEditor(defaultProps);
-//             const textEditorInstance = textEditor.instance() as any;
-//             textEditorInstance.quillNode = document.createElement("div");
-//             document.createElement("div").appendChild(textEditorInstance.quillNode);
+    beforeEach(() => {
+        textEditor = shallow(createElement(RichText, {
+            ...defaultProps })
+        );
+    });
 
-//             const editorSpy = spyOn(textEditorInstance, "setUpEditor").and.callThrough();
-//             textEditorInstance.componentDidMount();
+    describe("that is not read-only", () => {
+        it("renders the structure correctly", () => {
+            textEditor.setProps({ readOnly: false });
 
-//             expect(editorSpy).toHaveBeenCalled();
-//         });
+            expect(textEditor).toBeElement(
+                createElement("div", { className: "widget-rich-text" },
+                    createElement("div", { style: { whiteSpace: "pre-wrap" } },
+                        createElement("div", { className: "widget-rich-text-quill" })
+                    ),
+                    createElement(Alert, {})
+                )
+            );
+        });
 
-//         it("updates when the editor value changes", () => {
-//             textEditor = shallowRenderTextEditor(defaultProps); // extract into a beforeEach
-//             const textEditorInstance = textEditor.instance() as any;
-//             textEditorInstance.quillNode = document.createElement("div");
-//             document.createElement("div").appendChild(textEditorInstance.quillNode);
+        it("renders a quill editor", () => {
+            const textEditorInstance = textEditor.instance() as any;
+            textEditorInstance.quillNode = document.createElement("div");
+            document.createElement("div").appendChild(textEditorInstance.quillNode);
 
-//             const editorSpy = spyOn(textEditorInstance, "updateEditor").and.callThrough();
-//             textEditorInstance.componentDidUpdate(defaultProps);
-//             textEditorInstance.componentDidMount();
-//             defaultProps.value = "New value";
-//             textEditorInstance.componentDidUpdate(defaultProps);
+            const editorSpy = spyOn(textEditorInstance, "setUpEditor").and.callThrough();
+            textEditorInstance.componentDidMount();
 
-//             expect(editorSpy).toHaveBeenCalledTimes(1);
-//         });
+            expect(editorSpy).toHaveBeenCalled();
+        });
 
-//         it("renders a quill editor with an alert message", () => {
-//             const richTextProps: RichTextProps = {
-//                 ...defaultProps,
-//                 alertMessage: "Error message",
-//                 readOnly: false
-//             };
+        it("updates when the editor value changes", () => {
+            const richText = fullRenderTextEditor(defaultProps);
+            const textEditorInstance = richText.instance() as any;
+            textEditorInstance.quillNode = document.createElement("div");
+            document.createElement("div").appendChild(textEditorInstance.quillNode);
 
-//             textEditor = shallowRenderTextEditor(richTextProps);
-//             expect(textEditor).toBeElement(
-//                 createElement("div", { className: "widget-rich-text has-error" },
-//                     createElement("div", {
-//                             style: { whiteSpace: "pre-wrap" },
-//                             dangerouslySetInnerHTML: undefined
-//                         },
-//                         createElement("div", { className: "widget-rich-text-quill" })
-//                     ),
-//                     createElement(Alert, { message: richTextProps.alertMessage })
-//                 )
-//             );
-//         });
+            const editorSpy = spyOn(textEditorInstance, "updateEditor").and.callThrough();
+            textEditorInstance.componentDidUpdate(defaultProps);
+            textEditorInstance.componentDidMount();
+            richText.setProps({ value: "New value" });
 
-//         describe("with editor mode set to", () => {
-//             const getToolBar: any = (props: RichTextProps) => {
-//                 textEditor = shallowRenderTextEditor(props);
-//                 const textEditorInstance = textEditor.instance() as any;
-//                 const quillNode = textEditorInstance.quillNode = document.createElement("div");
-//                 document.createElement("div").appendChild(quillNode);
-//                 textEditorInstance.componentDidMount();
+            expect(editorSpy).toHaveBeenCalledTimes(1);
+        });
 
-//                 return textEditorInstance.quill.getModule("toolbar");
-//             };
+        it("renders a quill editor with an alert message", () => {
+            const extendedProps = {
+                ...defaultProps,
+                alertMessage: "Error message"
+            };
+            const shallowTextEditor = shallowRenderTextEditor(extendedProps);
+            shallowTextEditor.setProps({ readOnly: false });
 
-//             it("basic renders a basic text editor", () => {
-//                 const toolbar = getToolBar(defaultProps);
+            expect(shallowTextEditor).toBeElement(
+                createElement("div", { className: "widget-rich-text has-error" },
+                    createElement("div", {
+                            style: { whiteSpace: "pre-wrap" },
+                            dangerouslySetInnerHTML: undefined
+                        },
+                        createElement("div", { className: "widget-rich-text-quill" })
+                    ),
+                    createElement(Alert, { message: extendedProps.alertMessage })
+                )
+            );
+        });
+    });
 
-//                 expect(toolbar.options.container.length).toBe(2);
-//             });
+    describe("with editor mode set to", () => {
+        const getToolBar: any = (props: RichTextProps) => {
+            const fullTextEditor = fullRenderTextEditor(props);
+            const textEditorInstance = fullTextEditor.instance() as any;
+            const quillNode = textEditorInstance.quillNode = document.createElement("div");
+            document.createElement("div").appendChild(quillNode);
 
-//             it("extended renders an extended text editor", () => {
-//                 defaultProps.editorOption = "extended";
-//                 const toolbar = getToolBar(defaultProps);
+            return textEditorInstance.quill.getModule("toolbar");
+        };
 
-//                 expect(toolbar.options.container.length).toBe(6);
-//             });
+        it("basic renders a basic text editor", () => {
+            const toolbar = getToolBar(defaultProps);
 
-//             it("custom renders a custom toolbar", () => {
-//                 defaultProps.editorOption = "custom";
-//                 defaultProps.customOptions = [ { option: "bold" }, { option: "spacer" }, { option: "underline" } ];
-//                 const toolbar = getToolBar(defaultProps);
+            expect(toolbar.options.container.length).toBe(2);
+        });
 
-//                 expect(toolbar.options.container.length).toBe(2);
-//             });
-//         });
-//     });
-//     // TODO: Add tests for invalid HTML and for sanitized HTML
-//     describe("that is read-only", () => {
-//         defaultProps.readOnly = true;
+        it("extended renders an extended text editor", () => {
+            const extendedProps = {
+                ...defaultProps,
+                editorOption: "extended"
+            };
+            const toolbar = getToolBar(extendedProps);
 
-//         it("with read-only style text renders the structure correctly", () => {
-//             defaultProps.readOnlyStyle = "text";
-//             textEditor = shallowRenderTextEditor(defaultProps);
+            expect(toolbar.options.container.length).toBe(6);
+        });
 
-//             expect(textEditor).toBeElement(
-//                 createElement("div", { className: "widget-rich-text disabled-text ql-snow" },
-//                     createElement("div", {
-//                         className: "ql-editor",
-//                         style: { whiteSpace: "pre-wrap" },
-//                         dangerouslySetInnerHTML: { __html: defaultProps.value }
-//                     })
-//                 )
-//             );
-//         });
+        it("custom renders a custom toolbar", () => {
+            const customOptions = [ { option: "bold" }, { option: "spacer" }, { option: "underline" } ];
+            const extendedProps = {
+                ...defaultProps,
+                editorOption: "custom",
+                customOptions
+            };
+            const toolbar = getToolBar(extendedProps);
 
-//         it("with read-only style bordered has the disabled-bordered class", () => {
-//             defaultProps.readOnlyStyle = "bordered";
-//             textEditor = shallowRenderTextEditor(defaultProps);
+            expect(toolbar.options.container.length).toBe(2);
+        });
+    });
 
-//             expect(textEditor).toHaveClass("disabled-bordered");
-//         });
+    describe("that is read-only", () => {
+        beforeEach(() => {
+            textEditor.setProps({ readOnly: true });
+        });
 
-//         it("with read-only style borderedToolbar has the disabled-bordered-toolbar class", () => {
-//             defaultProps.readOnlyStyle = "borderedToolbar";
-//             textEditor = shallowRenderTextEditor(defaultProps);
+        it("with read-only style text renders the structure correctly", () => {
+            textEditor.setProps({ readOnlyStyle: "text" });
 
-//             expect(textEditor).toHaveClass("disabled-bordered-toolbar");
-//         });
-//     });
+            expect(textEditor).toBeElement(
+                createElement("div", { className: "widget-rich-text disabled-text ql-snow" },
+                    createElement("div", {
+                        className: "ql-editor",
+                        style: { whiteSpace: "pre-wrap" },
+                        dangerouslySetInnerHTML: { __html: defaultProps.value }
+                    })
+                )
+            );
+        });
 
-//     it("destroys and recreates the editor on update when configured to recreate", () => {
-//         defaultProps.recreate = true;
-//         const richText = fullRenderTextEditor(defaultProps);
-//         const richTextInstance = richText.instance() as any;
-//         const editorSpy = spyOn(richTextInstance, "setUpEditor").and.callThrough();
+        it("with read-only style bordered has the disabled-bordered class", () => {
+            textEditor.setProps({ readOnlyStyle: "bordered" });
 
-//         richTextInstance.componentDidUpdate();
-//         expect(editorSpy).toHaveBeenCalled();
-//     });
+            expect(textEditor).toHaveClass("disabled-bordered");
+        });
 
-//     describe("whose read-only status changes from true to false", () => {
-//         it("and read-only style is not text sets up the editor afresh", () => {
-//             defaultProps.readOnly = true;
-//             const richText = fullRenderTextEditor(defaultProps);
-//             const editorSpy = spyOn(richText.instance() as any, "setUpEditor").and.callThrough();
+        it("with read-only style borderedToolbar has the disabled-bordered-toolbar class", () => {
+            textEditor.setProps({ readOnlyStyle: "borderedToolbar" });
 
-//             richText.setProps({ readOnly: false });
-//             expect(editorSpy).toHaveBeenCalled();
-//         });
-//     });
-// });
+            expect(textEditor).toHaveClass("disabled-bordered-toolbar");
+        });
+    });
+
+    it("destroys and recreates the editor on update when configured to recreate", () => {
+        const richText = fullRenderTextEditor(defaultProps);
+        richText.setProps({ recreate: true });
+        const richTextInstance = richText.instance() as any;
+        const editorSpy = spyOn(richTextInstance, "setUpEditor").and.callThrough();
+
+        richTextInstance.componentDidUpdate();
+        expect(editorSpy).toHaveBeenCalled();
+    });
+
+    describe("whose read-only status changes from true to false", () => {
+        it("and read-only style is not text sets up the editor afresh", () => {
+            defaultProps.readOnly = true;
+            const richText = fullRenderTextEditor(defaultProps);
+            const editorSpy = spyOn(richText.instance() as any, "setUpEditor").and.callThrough();
+
+            richText.setProps({ readOnly: false });
+            expect(editorSpy).toHaveBeenCalled();
+        });
+    });
+});

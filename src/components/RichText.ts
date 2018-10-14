@@ -19,8 +19,7 @@ export interface CommonRichTextProps {
     readOnly: boolean;
     readOnlyStyle: ReadOnlyStyle;
     theme: Theme;
-    // customOptions: { option: string }[];
-    customOptions?: any;
+    customOptions: { option: string }[];
     minNumberOfLines: number;
     maxNumberOfLines: number;
     recreate?: boolean;

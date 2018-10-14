@@ -52,6 +52,5 @@ declare global {
             setFormatting(config: FormatterConfig<T>): void;
             setValidation(validation?: string): void;
         }
-
     }
 }

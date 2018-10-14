@@ -2,19 +2,8 @@ import { CSSProperties, Component, createElement } from "react";
 
 import { CommonRichTextProps, RichText, TabOptions } from "./RichText";
 import { ValidateConfigs } from "./ValidateConfigs";
-// import { AttributeValue } from "typings/pluginWidget";
 
-// import { getValue } from "../utils/ContainerUtils";
-// import { getValue, parseStyle } from "../utils/ContainerUtils";
-interface WrapperProps extends CommonRichTextProps {
-    // "class": string;
-    mxform: mxui.lib.form._FormBase;
-    mxObject?: mendix.lib.MxObject;
-    // style: string;
-    // readOnly: boolean;
-}
-
-export interface RichTextContainerProps extends WrapperProps {
+export interface RichTextContainerProps extends CommonRichTextProps {
     class: string;
     style: CSSProperties;
     stringAttribute: PluginWidget.EditableValue<string>;
@@ -22,27 +11,14 @@ export interface RichTextContainerProps extends WrapperProps {
     editable: "default" | "never";
     onChangeAction?: PluginWidget.ActionValue;
     tabAction: TabOptions;
-    customOptions: PluginWidget.DynamicValue<object[]>;
 }
 
 export type ReadOnlyStyle = "bordered" | "text" | "borderedToolbar";
 
 export default class RichTextContainer extends Component<RichTextContainerProps> {
     private isEditing = false;
-
-    componentWillMount() {
-        this.handleOnChange = this.handleOnChange.bind(this);
-        this.executeOnChangeAction = this.executeOnChangeAction.bind(this);
-        this.onFormSubmit = this.onFormSubmit.bind(this);
-    }
-
-    // componentWillUpdate() {
-    //     this.onFormSubmit();
-    // }
-    componentDidMount() {
-        // tslint:disable-next-line:no-console
-        console.log(this.props.mxform);
-    }
+    private readonly handleOnChangeAction = this.handleOnChange.bind(this);
+    private readonly executeOnChange = this.executeOnChangeAction.bind(this);
 
     render() {
         const readOnly = this.isReadOnly();
@@ -55,14 +31,13 @@ export default class RichTextContainer extends Component<RichTextContainerProps>
                 customOptions: this.props.customOptions,
                 minNumberOfLines: this.props.minNumberOfLines,
                 maxNumberOfLines: this.props.maxNumberOfLines,
-                readOnlyStyle: this.props.stringAttribute.status ? this.props.readOnlyStyle : "bordered",
-                // readOnlyStyle: this.props.readOnlyStyle,
+                readOnlyStyle: this.props.stringAttribute.status === PluginWidget.ValueStatus.Available ? this.props.readOnlyStyle : "bordered",
                 className: this.props.class,
                 style: this.props.style,
                 sanitizeContent: this.props.sanitizeContent,
                 value: this.props.stringAttribute.value || "",
-                onChange: !readOnly ? this.handleOnChange : undefined,
-                onBlur: !readOnly ? this.executeOnChangeAction : undefined,
+                onChange: !readOnly ? this.handleOnChangeAction : undefined,
+                onBlur: !readOnly ? this.executeOnChange : undefined,
                 readOnly,
                 alertMessage: this.props.stringAttribute.validation.join(", ")
             })
@@ -79,9 +54,24 @@ export default class RichTextContainer extends Component<RichTextContainerProps>
 
         if (!stringAttribute.readOnly) {
             stringAttribute.setValue(value);
-            this.executeOnChangeAction();
         }
         this.isEditing = true;
+    }
+
+    componentWillUnmount() {
+        if (window && this.isEditing) {
+            // this.executeOnChangeAction();
+        }
+
+        (window.document.getElementsByClassName("ql-editor")[0] as any).firstChild.focus = () => {
+            alert("focused");
+         };
+    }
+
+    componentDidMount() {
+        // (window.document.getElementsByClassName("ql-editor")[0] as any).firstChild.focus = () => {
+        //     alert("focused");
+        //  };
     }
 
     private executeOnChangeAction() {
@@ -93,10 +83,11 @@ export default class RichTextContainer extends Component<RichTextContainerProps>
         }
     }
 
-    private onFormSubmit(onSuccess: () => void) {
-        if (this.isEditing) {
-            this.executeOnChangeAction();
-        }
-        onSuccess();
-    }
+    // Use for exceptional case where/when user has focus inside the widget and clicks a button
+    // private onFormSubmit(onSuccess: () => void) {
+    //     if (this.isEditing) {
+    //         this.executeOnChangeAction();
+    //     }
+    //     onSuccess();
+    // }
 }
