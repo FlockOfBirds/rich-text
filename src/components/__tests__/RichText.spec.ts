@@ -174,6 +174,42 @@ describe("RichText", () => {
         expect(editorSpy).toHaveBeenCalled();
     });
 
+    it("cleans and removes unwanted tags when configured to sanitize", () => {
+        const customProps = {
+            ...defaultProps,
+            sanitizeContent: true,
+            value: "<script>Header</script>",
+            readOnly: true
+        };
+        const richText = fullRenderTextEditor(customProps);
+
+        const richTextInstance = richText.instance() as any;
+        const editorSpy = spyOn(richTextInstance, "sanitize").and.callThrough();
+        richTextInstance.componentDidUpdate(customProps);
+        richTextInstance.componentDidMount();
+
+        expect(richTextInstance.quill.container.firstChild.innerHTML).toBe("<p><br></p>");
+        expect(editorSpy).toHaveBeenCalled();
+    });
+
+    it("does not sanitize content when configured to not to", () => {
+        const customProps = {
+            ...defaultProps,
+            sanitizeContent: false,
+            value: "<script>Header</script>",
+            readOnly: true
+        };
+        const richText = fullRenderTextEditor(customProps);
+
+        const richTextInstance = richText.instance() as any;
+        const editorSpy = spyOn(richTextInstance, "sanitize").and.callThrough();
+        richTextInstance.componentDidUpdate(customProps);
+        richTextInstance.componentDidMount();
+
+        expect(richTextInstance.quill.container.firstChild.innerHTML).toBe("<p>Header</p>");
+        expect(editorSpy).toHaveBeenCalled();
+    });
+
     describe("whose read-only status changes from true to false", () => {
         it("and read-only style is not text sets up the editor afresh", () => {
             defaultProps.readOnly = true;
