@@ -17,6 +17,7 @@ export type ReadOnlyStyle = "bordered" | "text" | "borderedToolbar";
 
 export default class RichTextContainer extends Component<RichTextContainerProps> {
     private isEditing = false;
+    private formHandle?: number;
     private readonly handleOnChangeAction = this.handleOnChange.bind(this);
     private readonly executeOnChange = this.executeOnChangeAction.bind(this);
 
@@ -58,20 +59,17 @@ export default class RichTextContainer extends Component<RichTextContainerProps>
         this.isEditing = true;
     }
 
-    componentWillUnmount() {
-        if (window && this.isEditing) {
-            // this.executeOnChangeAction();
-        }
-
-        (window.document.getElementsByClassName("ql-editor")[0] as any).firstChild.focus = () => {
-            alert("focused");
-         };
+    componentDidMount() {
+        this.onFormSubmit = this.onFormSubmit.bind(this);
+        const mxform = (mx.ui as any).getContentForm() as mxui.lib.form._FormBase;
+        this.formHandle = mxform.listen("submit", this.onFormSubmit);
     }
 
-    componentDidMount() {
-        // (window.document.getElementsByClassName("ql-editor")[0] as any).firstChild.focus = () => {
-        //     alert("focused");
-        //  };
+    componentWillUnmount() {
+        if (this.formHandle) {
+            const mxform = (mx.ui as any).getContentForm() as mxui.lib.form._FormBase;
+            mxform.unlisten(this.formHandle);
+        }
     }
 
     private executeOnChangeAction() {
@@ -84,10 +82,10 @@ export default class RichTextContainer extends Component<RichTextContainerProps>
     }
 
     // Use for exceptional case where/when user has focus inside the widget and clicks a button
-    // private onFormSubmit(onSuccess: () => void) {
-    //     if (this.isEditing) {
-    //         this.executeOnChangeAction();
-    //     }
-    //     onSuccess();
-    // }
+    private onFormSubmit(onSuccess: () => void) {
+        if (this.isEditing) {
+            this.executeOnChangeAction();
+        }
+        onSuccess();
+    }
 }
