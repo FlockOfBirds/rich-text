@@ -179,7 +179,11 @@ export class RichText extends Component<RichTextProps> {
     private updateEditor(props: RichTextProps) {
         if (this.quill) {
             this.quill.enable(!props.readOnly);
+            if (this.props.sanitizeContent) {
             this.quill.clipboard.dangerouslyPasteHTML(this.sanitize(props.value), "silent");
+            } else {
+                this.quill.setText(this.sanitize(props.value), "silent");
+            }
             this.setEditorStyle(props);
         }
     }
